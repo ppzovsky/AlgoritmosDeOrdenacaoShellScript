@@ -2,74 +2,74 @@
 
 # Função para fazer o merge
 merge() {
-    local l=$1
-    local m=$2
-    local r=$3
+    local inicio=$1
+    local meio=$2
+    local fim=$3
 
-    local n1=$((m - l + 1))
-    local n2=$((r - m))
+    local tamEsquerdo=$((meio - inicio + 1))
+    local tamDireito=$((fim - meio))
 
-    local -a L
-    local -a R
+    local -a arrayEsquerdo
+    local -a arrayDireito
 
-    for ((i = 0; i < n1; i++)); do
-        L[$i]=${array[$((l + i))]}
+    for ((i = 0; i < tamEsquerdo; i++)); do
+        arrayEsquerdo[$i]=${array[$((inicio + i))]}
     done
-    for ((j = 0; j < n2; j++)); do
-        R[$j]=${array[$((m + 1 + j))]}
+    for ((j = 0; j < tamDireito; j++)); do
+        arrayDireito[$j]=${array[$((meio + 1 + j))]}
     done
 
-    local i=0
-    local j=0
-    local k=$l
-    while [ $i -lt $n1 ] && [ $j -lt $n2 ]; do
-        if [[ $orderType == "numbers" ]]; then
+    local indiceEsquerdo=0
+    local indiceDireito=0
+    local indicePrincipal=$inicio
+    while [ $indiceEsquerdo -lt $tamEsquerdo ] && [ $indiceDireito -lt $tamDireito ]; do
+        if [[ $tipoOrdenacao == "numeros" ]]; then
             # Comparação para números
-            if (( L[i] <= R[j] )); then
-                array[k]=${L[i]}
-                i=$((i + 1))
+            if (( arrayEsquerdo[indiceEsquerdo] <= arrayDireito[indiceDireito] )); then
+                array[indicePrincipal]=${arrayEsquerdo[indiceEsquerdo]}
+                indiceEsquerdo=$((indiceEsquerdo + 1))
             else
-                array[k]=${R[j]}
-                j=$((j + 1))
+                array[indicePrincipal]=${arrayDireito[indiceDireito]}
+                indiceDireito=$((indiceDireito + 1))
             fi
         else
             # Comparação para letras
-            if [[ ${L[i]} < ${R[j]} ]]; then
-                array[k]=${L[i]}
-                i=$((i + 1))
+            if [[ ${arrayEsquerdo[indiceEsquerdo]} < ${arrayDireito[indiceDireito]} ]]; then
+                array[indicePrincipal]=${arrayEsquerdo[indiceEsquerdo]}
+                indiceEsquerdo=$((indiceEsquerdo + 1))
             else
-                array[k]=${R[j]}
-                j=$((j + 1))
+                array[indicePrincipal]=${arrayDireito[indiceDireito]}
+                indiceDireito=$((indiceDireito + 1))
             fi
         fi
-        k=$((k + 1))
+        indicePrincipal=$((indicePrincipal + 1))
     done
 
-    while [ $i -lt $n1 ]; do
-        array[k]=${L[i]}
-        i=$((i + 1))
-        k=$((k + 1))
+    while [ $indiceEsquerdo -lt $tamEsquerdo ]; do
+        array[indicePrincipal]=${arrayEsquerdo[indiceEsquerdo]}
+        indiceEsquerdo=$((indiceEsquerdo + 1))
+        indicePrincipal=$((indicePrincipal + 1))
     done
 
-    while [ $j -lt $n2 ]; do
-        array[k]=${R[j]}
-        j=$((j + 1))
-        k=$((k + 1))
+    while [ $indiceDireito -lt $tamDireito ]; do
+        array[indicePrincipal]=${arrayDireito[indiceDireito]}
+        indiceDireito=$((indiceDireito + 1))
+        indicePrincipal=$((indicePrincipal + 1))
     done
 }
 
 # Função de Merge Sort
 mergeSort() {
-    local l=$1
-    local r=$2
+    local inicio=$1
+    local fim=$2
 
-    if [ $l -lt $r ]; then
-        local m=$((l + (r - l) / 2))
+    if [ $inicio -lt $fim ]; then
+        local meio=$((inicio + (fim - inicio) / 2))
 
-        mergeSort $l $m
-        mergeSort $((m + 1)) $r
+        mergeSort $inicio $meio
+        mergeSort $((meio + 1)) $fim
 
-        merge $l $m $r
+        merge $inicio $meio $fim
     fi
 }
 
@@ -77,13 +77,13 @@ mergeSort() {
 echo "Escolha o tipo de ordenação:"
 echo "1 - Numérica"
 echo "2 - Alfabética"
-read choice
+read escolha
 
-if [ "$choice" -eq 1 ]; then
-    orderType="numbers"
+if [ "$escolha" -eq 1 ]; then
+    tipoOrdenacao="numeros"
     echo "Digite os números, separados por espaço:"
-elif [ "$choice" -eq 2 ]; then
-    orderType="letters"
+elif [ "$escolha" -eq 2 ]; then
+    tipoOrdenacao="letras"
     echo "Digite as letras ou palavras, separadas por espaço:"
 else
     echo "Escolha inválida. Saindo."
@@ -98,4 +98,4 @@ echo "Lista Original: ${array[@]}"
 # Chamar a função mergeSort
 mergeSort 0 $(( ${#array[@]} - 1 ))
 
-echo "Lista Ordenada": ${array[@]}"
+echo "Lista Ordenada: ${array[@]}"

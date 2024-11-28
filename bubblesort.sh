@@ -2,25 +2,25 @@
 
 # Função para Bubble Sort
 bubbleSort() {
-    local n=${#array[@]}
+    local tamanho=${#array[@]}
 
-    for ((i = 0; i < n - 1; i++)); do
-        for ((j = 0; j < n - i - 1; j++)); do
-            if [[ $orderType == "numbers" ]]; then
+    for ((i = 0; i < tamanho - 1; i++)); do
+        for ((j = 0; j < tamanho - i - 1; j++)); do
+            if [[ $tipoOrdenacao == "numeros" ]]; then
                 # Comparação para números
                 if (( array[j] > array[j + 1] )); then
                     # Troca os elementos
-                    temp=${array[j]}
+                    temporario=${array[j]}
                     array[j]=${array[j + 1]}
-                    array[j + 1]=$temp
+                    array[j + 1]=$temporario
                 fi
             else
                 # Comparação para letras
                 if [[ ${array[j]} > ${array[j + 1]} ]]; then
                     # Troca os elementos
-                    temp=${array[j]}
+                    temporario=${array[j]}
                     array[j]=${array[j + 1]}
-                    array[j + 1]=$temp
+                    array[j + 1]=$temporario
                 fi
             fi
         done
@@ -31,13 +31,13 @@ bubbleSort() {
 echo "Escolha o tipo de ordenação:"
 echo "1 - Numérica"
 echo "2 - Alfabética"
-read choice
+read escolha
 
-if [ "$choice" -eq 1 ]; then
-    orderType="numbers"
+if [ "$escolha" -eq 1 ]; then
+    tipoOrdenacao="numeros"
     echo "Digite os números, separados por espaço:"
-elif [ "$choice" -eq 2 ]; then
-    orderType="letters"
+elif [ "$escolha" -eq 2 ]; then
+    tipoOrdenacao="letras"
     echo "Digite as letras ou palavras, separadas por espaço:"
 else
     echo "Escolha inválida. Saindo."
