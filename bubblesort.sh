@@ -28,17 +28,17 @@ bubbleSort() {
 }
 
 # Solicitar ao usuário o tipo de ordenação
-echo "Escolha o tipo de dados para ordenar:"
-echo "1 - Números"
-echo "2 - Letras"
+echo "Escolha o tipo de ordenação:"
+echo "1 - Numérica"
+echo "2 - Alfabética"
 read choice
 
 if [ "$choice" -eq 1 ]; then
     orderType="numbers"
-    echo "Digite os números para o array, separados por espaço:"
+    echo "Digite os números, separados por espaço:"
 elif [ "$choice" -eq 2 ]; then
     orderType="letters"
-    echo "Digite as letras para o array, separadas por espaço:"
+    echo "Digite as letras ou palavras, separadas por espaço:"
 else
     echo "Escolha inválida. Saindo."
     exit 1
@@ -47,9 +47,9 @@ fi
 # Ler os valores do array
 read -a array
 
-echo "Original Array: ${array[@]}"
+echo "Lista Original: ${array[@]}"
 
 # Chamar a função bubbleSort
 bubbleSort
 
-echo "Sorted Array: ${array[@]}"
+echo "Lista Ordenada: ${array[@]}"
